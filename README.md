@@ -1,6 +1,6 @@
-## Spaceman ##
+## Project Gu ##
 
-**Firefly meets Pikmin!**<br>
+**Building Humanity**<br>
 A 3D platformer with an insane protagonist. 
 
 #### Built in Unity ####
