@@ -10,7 +10,7 @@ public class Gu : MonoBehaviour {
     public float gravity;
     public float speed;
     public float turnSpeed;
-    private float jumpSpeed;
+    public float jumpSpeed;
 
 
     public static Gu Instance {
