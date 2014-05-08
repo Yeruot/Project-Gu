@@ -8,9 +8,11 @@ public class Gu : MonoBehaviour {
     private Vector3 movementVector;
 
     public float gravity;
-    public float speed;
+    public float forwardSpeed;
+    public float backwardSpeed;
     public float turnSpeed;
     public float jumpSpeed;
+    public float pushPower;
 
 
     public static Gu Instance {
@@ -38,7 +40,16 @@ public class Gu : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.Rotate(0, Input.GetAxis("Horizontal") * turnSpeed * Time.deltaTime, 0);
-        movementVector = transform.forward * Input.GetAxis("Vertical") * speed;
+
+        //forward and backward speeds are different
+        if (Input.GetAxis("Vertical") > 0)
+            movementVector = transform.forward * Input.GetAxis("Vertical") * forwardSpeed;
+        else if (Input.GetAxis("Vertical") < 0)
+            movementVector = transform.forward * Input.GetAxis("Vertical") * backwardSpeed;
+        else
+            movementVector = transform.forward * 0;
+        
+        
         if (charController.isGrounded) {
             //No need to apply gravity
             verticalSpeed = 0;
@@ -51,4 +62,19 @@ public class Gu : MonoBehaviour {
         movementVector.y = verticalSpeed;
         charController.Move(movementVector * Time.deltaTime);
 	}
+
+    void OnControllerColliderHit(ControllerColliderHit hit) {
+        Rigidbody body = hit.collider.attachedRigidbody;
+
+        if (body == null || body.isKinematic)
+            return;
+
+        if (hit.moveDirection.y < -0.3f)
+            return;
+
+        Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+        body.velocity = pushDirection * pushPower;
+    }
 }
+
+
