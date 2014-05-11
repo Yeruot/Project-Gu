@@ -20,16 +20,6 @@ public class Gu : MonoBehaviour {
         //This will allow our object to persist between scenes.
         DontDestroyOnLoad(this.gameObject);
     }
-
-	// Use this for initialization
-	void Start () {
-    
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
 }
 
 

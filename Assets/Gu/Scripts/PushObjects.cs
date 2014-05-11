@@ -4,16 +4,6 @@ using System.Collections;
 public class PushObjects : MonoBehaviour {
     public float pushPower;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     void OnControllerColliderHit(ControllerColliderHit hit) {
         Rigidbody body = hit.collider.attachedRigidbody;
 
