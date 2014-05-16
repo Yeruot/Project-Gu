@@ -157,8 +157,10 @@ public class CameraController : MonoBehaviour
 		tempCameraTransformPos.y=currentHeight;
 		cameraTransform.position=tempCameraTransformPos;
 		
-		// Always look at the target	
-		SetUpRotation(targetCenter, targetHead);
+		// Always look at the target if moving
+        ThirdPersonController thirdPersonController = GetComponent<ThirdPersonController>();
+        if (thirdPersonController.IsMoving() || snap)
+		    SetUpRotation(targetCenter, targetHead);
 	}
 	
 	void  LateUpdate (){

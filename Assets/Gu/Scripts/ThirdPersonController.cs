@@ -183,7 +183,6 @@ void  UpdateSmoothedMovementDirection ()
 			else
 			{
 				moveDirection = Vector3.RotateTowards(moveDirection, targetDirection, rotateSpeed * Mathf.Deg2Rad * Time.deltaTime, 1000);
-				
 				moveDirection = moveDirection.normalized;
 			}
 		}
@@ -367,9 +366,7 @@ void Update ()
 	// Set rotation to the move direction
 	if (IsGrounded())
 	{
-		
 		transform.rotation = Quaternion.LookRotation(moveDirection);
-			
 	}	
 	else
 	{
