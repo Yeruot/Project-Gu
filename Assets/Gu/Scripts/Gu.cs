@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//always on my mind
 public class Gu : MonoBehaviour {
     private static Gu instance = null;
     public GameObject targetObject { get; set; }
