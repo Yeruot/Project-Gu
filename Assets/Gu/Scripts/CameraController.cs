@@ -96,9 +96,9 @@ public class CameraController : MonoBehaviour
 		// Adjust real target angle when camera is locked
 		float targetAngle= originalTargetAngle; 
 		
-		// When pressing Fire2 (alt) the camera will snap to the target direction real quick.
+		// When pressing Snap (alt) the camera will snap to the target direction real quick.
 		// It will stop snapping when it reaches the target
-		if (Input.GetButton("Fire2"))
+		if (Input.GetButton("Snap"))
 			snap = true;
 		
 		if (snap)
