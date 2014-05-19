@@ -15,6 +15,21 @@ public class FindObject : MonoBehaviour {
         if (Physics.Raycast(transform.position, fwd, out hitObject, 3f)) {
             print(hitObject.transform.name);
             Gu.Instance.targetObject = hitObject.transform.gameObject;
+        } else {
+            if(Gu.Instance.targetObject != null)
+                removeAddedComponent();
+            Gu.Instance.targetObject = null;
         }
 	}
+
+    void removeAddedComponent() {
+        GameObject target = Gu.Instance.targetObject;
+        switch (target.tag) {
+            case "Block":
+                Destroy(target.GetComponent<PushObject>());
+                break;
+            default:
+                break;
+        }
+    }
 }
