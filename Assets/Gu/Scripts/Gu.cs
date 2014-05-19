@@ -22,6 +22,10 @@ public class Gu : MonoBehaviour {
         //This will allow our object to persist between scenes.
         DontDestroyOnLoad(this.gameObject);
     }
+
+    void Start() {
+        targetObject = null;
+    }
 }
 
 
