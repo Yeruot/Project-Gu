@@ -29,6 +29,7 @@ enum CharacterState {
 	Trotting = 2,
 	Running = 3,
 	Jumping = 4,
+    Pushing = 5,
 }
 
 private CharacterState _characterState;
