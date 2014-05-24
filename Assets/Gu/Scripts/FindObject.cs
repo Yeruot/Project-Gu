@@ -5,7 +5,7 @@ public class FindObject : MonoBehaviour {
     private RaycastHit hitObject;
     private Rect labelRect = new Rect((Screen.width / 2 - 50), ((Screen.height * 3) / 4 - 50), 100, 100);
     private bool displayTooltip;
-    private GUIStyle tooltipStyle;
+    public GUIStyle tooltipStyle;
 
 	// Use this for initialization
 	void Start () {
@@ -35,7 +35,6 @@ public class FindObject : MonoBehaviour {
 
     void OnGUI() {
         if (displayTooltip) {
-            GUI.backgroundColor = Color.blue;
             GUI.Label(labelRect, "Press E to push", tooltipStyle);
         }
     }
