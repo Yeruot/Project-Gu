@@ -5,6 +5,9 @@ public class FindObject : MonoBehaviour {
     private RaycastHit hitObject;
     private Rect labelRect = new Rect((Screen.width / 2 - 50), ((Screen.height * 3) / 4 - 50), 100, 100);
     private bool displayTooltip;
+
+    public Vector3 contactPoint { get; set; }
+    public Vector3 normal { get; set; }
     public GUIStyle tooltipStyle;
 
 	// Use this for initialization
@@ -23,6 +26,8 @@ public class FindObject : MonoBehaviour {
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
         if (Physics.Raycast(transform.position, fwd, out hitObject, 3f)) {
             displayTooltip = true;
+            contactPoint = hitObject.point;
+            normal = hitObject.normal;
             Gu.Instance.targetObject = hitObject.transform.gameObject;
         } else {
             displayTooltip = false;

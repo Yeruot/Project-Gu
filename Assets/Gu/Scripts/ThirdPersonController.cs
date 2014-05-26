@@ -88,7 +88,8 @@ private float walkTimeStart= 0.0f;
 private float lastJumpButtonTime= -10.0f;
 // Last time we performed a jump
 private float lastJumpTime= -1.0f;
-
+// Position we began a locked interaction
+private Vector3 lockPosition;
 
 // the height we jumped from (Used to determine for how long to apply extra jump power after jumping.)
 private float lastJumpStartHeight= 0.0f;
@@ -98,6 +99,7 @@ private Vector3 inAirVelocity= Vector3.zero;
 
 private float lastGroundedTime= 0.0f;
 
+//reference to Gu object;
 private Gu gu;
 
 private bool isControllable= true;
@@ -287,9 +289,9 @@ void ApplyPush() {
     //simply move backward in the direction of the camera pulling the object
 
     _characterState = CharacterState.Pushing;
+    lockPosition = transform.position;
 
     Transform playerTransform = this.gameObject.transform;
-    bool grounded = IsGrounded();
 
     // Forward vector relative to the camera along the x-z plane	
     Vector3 forward = playerTransform.TransformDirection(Vector3.forward);
@@ -310,7 +312,7 @@ void ApplyPush() {
     // Target direction
     Vector3 targetDirection = v * forward;
 
-    if (grounded) {
+    if (IsGrounded()) {
 
         // Smooth the speed based on the current target direction
         float curSmooth = speedSmoothing * Time.deltaTime;
@@ -360,15 +362,16 @@ void Update ()
 		Input.ResetInputAxes();
 	}
 
-	if (Input.GetButtonDown ("Jump"))
-	{
-		lastJumpButtonTime = Time.time;
-	}
-
-    if (Input.GetButton("Interact") && gu.validObjectFound())
+    if (Input.GetButton("Interact") && gu.validObjectFound()){
         ApplyPush();
-    else
+    }
+    else {
+        if (Input.GetButtonDown("Jump")) {
+            lastJumpButtonTime = Time.time;
+        }
         UpdateSmoothedMovementDirection();
+    }
+
 	
 	// Apply gravity
 	// - extra power jump modifies gravity

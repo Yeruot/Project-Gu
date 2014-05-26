@@ -2,21 +2,16 @@
 using System.Collections;
 
 public class PushObject : MonoBehaviour {
-    private float pushPower;
-
+    private float moveSpeed;
+    private Gu gu;
 
     void Start() {
-        switch (this.tag) {
-            case "Block":
-                pushPower = 1.5f;
-                break;
-            default:
-                break;
-        }
+        gu = Gu.Instance;
     }
 
 	// Update is called once per frame
 	void Update () {
+        moveSpeed = gu.gameObject.GetComponent<ThirdPersonController>().GetSpeed();
         Rigidbody body = this.rigidbody;
 
         if (body == null || body.isKinematic)
@@ -27,7 +22,7 @@ public class PushObject : MonoBehaviour {
 
         if (thirdPersonController.IsMoving()) {
             Vector3 pushDirection = new Vector3(direction.x, 0, direction.z);
-            body.velocity = pushDirection * pushPower;
+            body.velocity = pushDirection * moveSpeed;
         }
 	}
 }
