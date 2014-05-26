@@ -3,7 +3,16 @@ using System.Collections;
 
 //always on my mind
 public class Gu : MonoBehaviour {
+
+    private enum ActionState
+    {
+        None = 0,
+        Pushing = 1,
+    }
+
+    private ActionState actionState;
     private static Gu instance = null;
+
     public GameObject targetObject { get; set; }
 
     public static Gu Instance {
@@ -25,6 +34,24 @@ public class Gu : MonoBehaviour {
 
     void Start() {
         targetObject = null;
+    }
+
+    public bool validObjectFound() {
+        if (targetObject != null)
+            return true;
+        else
+            return false;
+    }
+
+    public void StartPush(){
+        actionState = ActionState.Pushing;
+        if (!targetObject.GetComponent<PushObject>())
+            targetObject.AddComponent("PushObject");
+    }
+
+    public void EndPush() {
+        actionState = ActionState.None;
+        Destroy(targetObject.GetComponent<PushObject>());
     }
 }
 

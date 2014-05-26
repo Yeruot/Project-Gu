@@ -40,10 +40,11 @@ public class FindObject : MonoBehaviour {
     }
 
     void removeAddedComponent() {
-        GameObject target = Gu.Instance.targetObject;
+        Gu gu = Gu.Instance;
+        GameObject target = gu.targetObject;
         switch (target.tag) {
             case "Block":
-                Destroy(target.GetComponent<PushObject>());
+                gu.EndPush();
                 break;
             default:
                 break;

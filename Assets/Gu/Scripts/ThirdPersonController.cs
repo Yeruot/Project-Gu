@@ -35,13 +35,13 @@ enum CharacterState {
 private CharacterState _characterState;
 
 // The speed when walking
-public float walkSpeed= 4.0f;
+public float walkSpeed= 6.0f;
 // after trotAfterSeconds of walking we trot with trotSpeed
-public float trotSpeed= 6.0f;
+public float trotSpeed= 8.0f;
 // when pressing "Fire3" button (cmd) we start running
-public float runSpeed= 8.0f;
+public float runSpeed= 10.0f;
 // When pushing an object
-public float pushSpeed = 4.0f;
+public float pushSpeed = 6.0f;
 
 public float inAirControlAcceleration= 3.0f;
 
@@ -98,11 +98,13 @@ private Vector3 inAirVelocity= Vector3.zero;
 
 private float lastGroundedTime= 0.0f;
 
+private Gu gu;
 
 private bool isControllable= true;
 
 void  Awake ()
 {
+    gu = Gu.Instance;
 	moveDirection = transform.TransformDirection(Vector3.forward);
 	
 	_animation = GetComponent<Animation>();
@@ -295,7 +297,6 @@ void ApplyPush() {
     forward = forward.normalized;
 
     float v = Input.GetAxisRaw("Vertical");
-    float h = Input.GetAxisRaw("Horizontal");
 
     // Are we moving backwards or looking backwards
     if (v < -0.2f)
@@ -304,10 +305,10 @@ void ApplyPush() {
         movingBack = false;
 
     bool wasMoving = isMoving;
-    isMoving = Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f;
+    isMoving = Mathf.Abs(v) > 0.1f;
 
     // Target direction
-    Vector3 targetDirection = forward;
+    Vector3 targetDirection = v * forward;
 
     if (grounded) {
 
@@ -364,10 +365,10 @@ void Update ()
 		lastJumpButtonTime = Time.time;
 	}
 
-    if (!Input.GetButton("Interact"))
-        UpdateSmoothedMovementDirection();
-    else
+    if (Input.GetButton("Interact") && gu.validObjectFound())
         ApplyPush();
+    else
+        UpdateSmoothedMovementDirection();
 	
 	// Apply gravity
 	// - extra power jump modifies gravity

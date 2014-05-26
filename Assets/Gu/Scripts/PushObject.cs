@@ -8,7 +8,7 @@ public class PushObject : MonoBehaviour {
     void Start() {
         switch (this.tag) {
             case "Block":
-                pushPower = 1.0f;
+                pushPower = 1.5f;
                 break;
             default:
                 break;
@@ -24,12 +24,10 @@ public class PushObject : MonoBehaviour {
 
         ThirdPersonController thirdPersonController = Gu.Instance.GetComponent<ThirdPersonController>();
         Vector3 direction = thirdPersonController.GetDirection();
-        if (direction.y < -0.3f)
-            return;
 
         if (thirdPersonController.IsMoving()) {
             Vector3 pushDirection = new Vector3(direction.x, 0, direction.z);
-            body.velocity = pushDirection;
+            body.velocity = pushDirection * pushPower;
         }
 	}
 }

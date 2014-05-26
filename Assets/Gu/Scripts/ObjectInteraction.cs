@@ -11,8 +11,7 @@ public class ObjectInteraction : MonoBehaviour {
             if ((Input.GetButton("Interact")) && (target != null))
                 switch (target.tag) {
                     case "Block":
-                        if (!target.GetComponent<PushObject>())
-                            target.AddComponent("PushObject");
+                        gu.StartPush();
                         break;
                     default:
                         break;
