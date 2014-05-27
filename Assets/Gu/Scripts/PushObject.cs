@@ -10,7 +10,7 @@ public class PushObject : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         moveSpeed = gu.gameObject.GetComponent<ThirdPersonController>().GetSpeed();
         Rigidbody body = this.rigidbody;
 
@@ -21,7 +21,7 @@ public class PushObject : MonoBehaviour {
         Vector3 direction = thirdPersonController.GetDirection();
 
         if (thirdPersonController.IsMoving()) {
-            Vector3 pushDirection = new Vector3(direction.x, 0, direction.z);
+            Vector3 pushDirection = new Vector3(direction.x, 0.0f, direction.z);
             body.velocity = pushDirection * moveSpeed;
         }
 	}

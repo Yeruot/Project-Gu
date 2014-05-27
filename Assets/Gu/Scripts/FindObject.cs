@@ -31,8 +31,6 @@ public class FindObject : MonoBehaviour {
             Gu.Instance.targetObject = hitObject.transform.gameObject;
         } else {
             displayTooltip = false;
-            if(Gu.Instance.targetObject != null)
-                removeAddedComponent();
             Gu.Instance.targetObject = null;
 
         }
@@ -41,18 +39,6 @@ public class FindObject : MonoBehaviour {
     void OnGUI() {
         if (displayTooltip) {
             GUI.Label(labelRect, "Press E to push", tooltipStyle);
-        }
-    }
-
-    void removeAddedComponent() {
-        Gu gu = Gu.Instance;
-        GameObject target = gu.targetObject;
-        switch (target.tag) {
-            case "Block":
-                gu.EndPush();
-                break;
-            default:
-                break;
         }
     }
 }

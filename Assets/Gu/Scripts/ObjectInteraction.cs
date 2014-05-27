@@ -8,7 +8,7 @@ public class ObjectInteraction : MonoBehaviour {
         Gu gu = Gu.Instance;
         if (gu.targetObject != null) {
             GameObject target = Gu.Instance.targetObject;
-            if ((Input.GetButton("Interact")) && (target != null))
+            if ((Input.GetButton("Interact")) && (target != null)) {
                 switch (target.tag) {
                     case "Block":
                         gu.StartPush();
@@ -16,6 +16,22 @@ public class ObjectInteraction : MonoBehaviour {
                     default:
                         break;
                 }
+            } else {
+                if (Gu.Instance.targetObject != null)
+                    removeAddedComponent();
+            }
         }
 	}
+
+    void removeAddedComponent() {
+        Gu gu = Gu.Instance;
+        GameObject target = gu.targetObject;
+        switch (target.tag) {
+            case "Block":
+                gu.EndPush();
+                break;
+            default:
+                break;
+        }
+    }
 }
