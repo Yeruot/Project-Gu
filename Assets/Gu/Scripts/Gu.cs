@@ -8,6 +8,7 @@ public class Gu : MonoBehaviour {
     {
         None = 0,
         Pushing = 1,
+        Carrying = 2,
     }
 
     private ActionState actionState;
@@ -52,6 +53,14 @@ public class Gu : MonoBehaviour {
     public void EndPush() {
         actionState = ActionState.None;
         Destroy(targetObject.GetComponent<PushObject>());
+    }
+
+    public void PickUp() {
+        actionState = ActionState.Carrying;
+    }
+
+    public void PutDown() {
+        actionState = ActionState.None;
     }
 }
 

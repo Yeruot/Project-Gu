@@ -10,8 +10,11 @@ public class ObjectInteraction : MonoBehaviour {
             GameObject target = Gu.Instance.targetObject;
             if ((Input.GetButton("Interact")) && (target != null)) {
                 switch (target.tag) {
-                    case "Block":
+                    case "Large Object":
                         gu.StartPush();
+                        break;
+                    case "Small Object":
+                        gu.PickUp();
                         break;
                     default:
                         break;
@@ -27,7 +30,7 @@ public class ObjectInteraction : MonoBehaviour {
         Gu gu = Gu.Instance;
         GameObject target = gu.targetObject;
         switch (target.tag) {
-            case "Block":
+            case "Large Object":
                 gu.EndPush();
                 break;
             default:
