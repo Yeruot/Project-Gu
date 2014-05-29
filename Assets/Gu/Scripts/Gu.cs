@@ -15,6 +15,7 @@ public class Gu : MonoBehaviour {
     private static Gu instance = null;
 
     public GameObject targetObject { get; set; }
+    public GameObject holdingObject { get; set; }
 
     public static Gu Instance {
         get {return instance;}

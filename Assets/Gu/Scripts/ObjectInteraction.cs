@@ -8,36 +8,39 @@ public class ObjectInteraction : MonoBehaviour {
         Gu gu = Gu.Instance;
         if (gu.targetObject != null) {
             GameObject target = Gu.Instance.targetObject;
-            if ((Input.GetButton("Interact")) && (target != null)) {
-                switch (target.tag) {
-                    case "Large Object":
-                        gu.StartPush();
-                        break;
-                    case "Small Object":
-                        gu.PickUp();
-                        break;
-                    default:
-                        break;
-                }
+            if ((Input.GetButton("Interact")) && ((target != null) || (target != gu.holdingObject))) {
+                startAction(true, target.tag);
             } else {
                 if (Gu.Instance.targetObject != null)
-                    removeAddedComponent();
+                    startAction(false, target.tag);
             }
         }
 	}
 
-    void removeAddedComponent() {
+    void startAction(bool start, string tag) {
         Gu gu = Gu.Instance;
-        GameObject target = gu.targetObject;
-        switch (target.tag) {
-            case "Large Object":
-                gu.EndPush();
-                break;
-            case "Small Object":
-                gu.PutDown();
-                break;
-            default:
-                break;
+        if (start) {
+            switch (tag) {
+                case "Large Object":
+                    gu.StartPush();
+                    break;
+                case "Small Object":
+                    gu.PickUp();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (tag) {
+                case "Large Object":
+                    gu.EndPush();
+                    break;
+                case "Small Object":
+                    gu.PutDown();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
