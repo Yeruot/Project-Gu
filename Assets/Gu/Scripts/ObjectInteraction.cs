@@ -33,6 +33,9 @@ public class ObjectInteraction : MonoBehaviour {
             case "Large Object":
                 gu.EndPush();
                 break;
+            case "Small Object":
+                gu.PutDown();
+                break;
             default:
                 break;
         }
