@@ -8,39 +8,40 @@ public class ObjectInteraction : MonoBehaviour {
         Gu gu = Gu.Instance;
         if (gu.targetObject != null) {
             GameObject target = Gu.Instance.targetObject;
-            if ((Input.GetButton("Interact")) && ((target != null) || (target != gu.holdingObject))) {
-                startAction(true, target.tag);
-            } else {
+            if ((Input.GetButtonDown("Interact")) && ((target != null) || (target != gu.holdingObject))) {
+                performAction(target.tag);
+            } else if (Input.GetButtonUp("Interact")){
                 if (Gu.Instance.targetObject != null)
-                    startAction(false, target.tag);
+                    endConcurrentAction(target.tag);
             }
         }
 	}
 
-    void startAction(bool start, string tag) {
+    void performAction(string tag) {
         Gu gu = Gu.Instance;
-        if (start) {
-            switch (tag) {
-                case "Large Object":
-                    gu.StartPush();
-                    break;
-                case "Small Object":
-                    gu.PickUp();
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            switch (tag) {
-                case "Large Object":
-                    gu.EndPush();
-                    break;
-                case "Small Object":
+        switch (tag) {
+            case "Large Object":
+                gu.StartPush();
+                break;
+            case "Small Object":
+                if (gu.IsCarrying())
                     gu.PutDown();
-                    break;
-                default:
-                    break;
-            }
+                else
+                    gu.PickUp();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void endConcurrentAction(string tag) {
+        Gu gu = Gu.Instance;
+        switch (tag) {
+            case "Large Object":
+                gu.EndPush();
+                break;
+            default:
+                break;
         }
     }
 }
