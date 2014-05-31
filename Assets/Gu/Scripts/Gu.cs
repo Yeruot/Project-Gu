@@ -59,14 +59,14 @@ public class Gu : MonoBehaviour {
     public void PickUp() {
         actionState = ActionState.Carrying;
         holdingObject = targetObject;
-        Destroy(holdingObject.rigidbody);
+        Destroy(holdingObject.transform.rigidbody);
         holdingObject.transform.parent = transform;
         holdingObject.transform.localPosition = new Vector3(0, 2.0f, 2.0f);
     }
 
     public void PutDown() {
         actionState = ActionState.None;
-        holdingObject.gameObject.AddComponent(typeof(Rigidbody));
+        holdingObject.AddComponent(typeof(Rigidbody));
         holdingObject.transform.parent = null;
         holdingObject = null;
     }
