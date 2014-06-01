@@ -66,8 +66,10 @@ public class Gu : MonoBehaviour {
     }
 
     public void PutDown() {
+        print("Put down");
         actionState = ActionState.None;
         holdingObject.AddComponent(typeof(Rigidbody));
+        holdingObject.AddComponent(typeof(BoxCollider));
         holdingObject.transform.parent = null;
         holdingObject = null;
     }

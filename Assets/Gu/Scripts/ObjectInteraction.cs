@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectInteraction : MonoBehaviour {
+public class ObjectInteraction : MonoBehaviour
+{
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update() {
         Gu gu = Gu.Instance;
-        if (gu.targetObject != null) {
-            GameObject target = Gu.Instance.targetObject;
-            if ((Input.GetButtonDown("Interact")) && ((target != null) || (target != gu.holdingObject))) {
-                performAction(target.tag);
-            } else if (Input.GetButtonUp("Interact")){
-                if (Gu.Instance.targetObject != null)
-                    endConcurrentAction(target.tag);
-            }
+        if (Input.GetButtonDown("Interact")) {
+            if (gu.IsCarrying())
+                performAction(gu.holdingObject.tag);
+            else if (gu.targetObject != null)
+                performAction(gu.targetObject.tag);
+        } else if (Input.GetButtonUp("Interact")) {
+            if (gu.targetObject != null)
+                endConcurrentAction(gu.targetObject.tag);
         }
-	}
+    }
 
     void performAction(string tag) {
         Gu gu = Gu.Instance;
@@ -24,10 +25,13 @@ public class ObjectInteraction : MonoBehaviour {
                 gu.StartPush();
                 break;
             case "Small Object":
-                if (gu.IsCarrying())
+                if (gu.IsCarrying()) {
+                    print("butts");
                     gu.PutDown();
-                else
+                } else {
+                    print("dicks");
                     gu.PickUp();
+                }
                 break;
             default:
                 break;
