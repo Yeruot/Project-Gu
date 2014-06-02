@@ -63,6 +63,7 @@ public class Gu : MonoBehaviour {
         Destroy(holdingObject.transform.collider);
         holdingObject.transform.parent = transform;
         holdingObject.transform.localPosition = new Vector3(0, 2.0f, 2.0f);
+        holdingObject.transform.rotation = transform.rotation;
     }
 
     public void PutDown() {
