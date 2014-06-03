@@ -314,6 +314,13 @@ void ApplyPush() {
 
     if (IsGrounded()) {
 
+        // We store speed and direction seperately,
+        // so that when the character stands still we still have a valid forward direction
+        // moveDirection is always normalized, and we only update it if there is user input.
+        if (targetDirection != Vector3.zero) {
+            moveDirection = targetDirection.normalized;
+        }
+
         // Smooth the speed based on the current target direction
         float curSmooth = speedSmoothing * Time.deltaTime;
 
@@ -321,11 +328,8 @@ void ApplyPush() {
         //* We want to support analog input but make sure you cant walk faster diagonally than just forward or sideways
         float targetSpeed = Mathf.Min(targetDirection.magnitude, 1.0f);
 
-        _characterState = CharacterState.Idle;
-
         // Pick speed modifier
         targetSpeed *= pushSpeed;
-        _characterState = CharacterState.Walking;
 
         moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, curSmooth);
 
@@ -431,7 +435,9 @@ void Update ()
 	// Set rotation to the move direction
 	if (IsGrounded())
 	{
-		transform.rotation = Quaternion.LookRotation(moveDirection);
+        if (!IsPushing()) {
+		    transform.rotation = Quaternion.LookRotation(moveDirection);
+        }
 	}	
 	else
 	{
@@ -511,6 +517,12 @@ public bool IsGroundedWithTimeout ()
 public void Reset ()
 {
 	gameObject.tag = "Player";
+}
+
+public bool IsPushing() {
+    if (_characterState == CharacterState.Pushing)
+        return true;
+    return false;
 }
 
 }
