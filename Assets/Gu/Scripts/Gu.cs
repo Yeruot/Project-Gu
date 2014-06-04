@@ -38,6 +38,8 @@ public class Gu : MonoBehaviour {
         targetObject = null;
     }
 
+    //determines whether a valid object is within
+    //Gu's sight
     public bool validObjectFound() {
         if (targetObject != null)
             return true;
@@ -45,17 +47,24 @@ public class Gu : MonoBehaviour {
             return false;
     }
 
+    //begins the pushing action on the target object
+    //by attaching the PushObject script to the target
+    //object
     public void StartPush(){
         actionState = ActionState.Pushing;
         if (!targetObject.GetComponent<PushObject>())
             targetObject.AddComponent("PushObject");
     }
 
+    //stop the pushing action.
     public void EndPush() {
         actionState = ActionState.None;
         Destroy(targetObject.GetComponent<PushObject>());
     }
 
+    //picks up the target object. Destroys rigidbody and collider
+    //orients the block with the player and make it a child
+    //of the player
     public void PickUp() {
         actionState = ActionState.Carrying;
         holdingObject = targetObject;
@@ -66,6 +75,9 @@ public class Gu : MonoBehaviour {
         holdingObject.transform.rotation = transform.rotation;
     }
 
+    //drops the object Gu is currently holding. Accomplishes this
+    //by setting the objects parent to null and reapplying all
+    //destroyed components
     public void PutDown() {
         print("Put down");
         actionState = ActionState.None;
