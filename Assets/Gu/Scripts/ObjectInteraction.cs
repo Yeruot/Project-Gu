@@ -4,13 +4,14 @@ using System.Collections;
 public class ObjectInteraction : MonoBehaviour
 {
 
-    // Update is called once per frame
+    // Update handles the interaction button being pressed
+    // and checks what state Gu is in
     void Update() {
         Gu gu = Gu.Instance;
         if (Input.GetButtonDown("Interact")) {
             if (gu.IsCarrying())
                 performAction(gu.holdingObject.tag);
-            else if (gu.targetObject != null)
+            else if (gu.validObjectFound())
                 performAction(gu.targetObject.tag);
         } else if (Input.GetButtonUp("Interact")) {
             if (gu.targetObject != null)
@@ -18,6 +19,8 @@ public class ObjectInteraction : MonoBehaviour
         }
     }
 
+    //This is where we perform the actual action based on
+    // the given tag
     void performAction(string tag) {
         Gu gu = Gu.Instance;
         switch (tag) {
@@ -38,6 +41,9 @@ public class ObjectInteraction : MonoBehaviour
         }
     }
 
+    // If the action was a continuous action that we want to
+    // make sure that when it is over that everything is
+    // reset and set back to normal
     void endConcurrentAction(string tag) {
         Gu gu = Gu.Instance;
         switch (tag) {
