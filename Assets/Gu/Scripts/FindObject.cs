@@ -10,6 +10,7 @@ public class FindObject : MonoBehaviour {
     public Vector3 normal { get; set; }
     public GUIStyle tooltipStyle;
 
+    // Different types for the tooltip
     enum ToolTipType
     {
         None = 0,
@@ -28,7 +29,11 @@ public class FindObject : MonoBehaviour {
         tooltipStyle.normal.textColor = Color.black;
 	}
 	
-	// Update is called once per frame
+	// Here we shoot a raycast from the player to find any interactable
+    // objects if an object is found the tag determines the tooltip
+    // displayed to the player we also set Gu's target object to be
+    // the object that he is looking at. This ensures that if we want to
+    // interact with the target object we will easily have reference to it
 	void Update () {
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
         if (Physics.Raycast(transform.position, fwd, out hitObject, 3f)) {
@@ -52,6 +57,9 @@ public class FindObject : MonoBehaviour {
         }
 	}
 
+    // Here is where we display the actual tooltip. The Tooltip
+    // is a GUI label and therefore must be displayed in the OnGUI
+    // function ensuring that it is displayed during GUI draws.
     void OnGUI() {
             switch(toolTipType){
                 case ToolTipType.Push:
