@@ -281,6 +281,10 @@ void  ApplyGravity ()
 	}
 }
 
+// Apply Push is a subest of UpdateSmoothedMovementDirection
+// except it prevents the player from turning around (not yet)
+// and also prevents the player from moving side to side while
+// the object is being pushed
 void ApplyPush() {
     //Here is where we will need to update out pushing direction
     //we will want to lock the player faceing the object and cause
