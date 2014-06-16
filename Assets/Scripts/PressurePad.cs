@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PressurePad : MonoBehaviour {
-    public gameObject triggerObject { get; set; }
+    public GameObject triggerObject { get; set; }
 
 
 	// Use this for initialization
