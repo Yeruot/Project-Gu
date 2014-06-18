@@ -17,7 +17,7 @@ public class PressurePad : MonoBehaviour {
 
     //when the player stands on the pressure pad
     // this is where the script will enter
-    void OnCollisionEnter(Collision collision){
+    void OnCollisionEnter(Collision collision) {
         print("On Enter");
         //trigger animations and whatever the script
         //is linked to
@@ -26,7 +26,7 @@ public class PressurePad : MonoBehaviour {
     //when the player leaves pressure pad
     // this is where the script will enter
     void OnCollisionExit(Collision collision){
-        print("On Enter");
+        print("On Exit");
         //trigger animations and whatever the script
         //is linked to
     }

@@ -877,7 +877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a47d9bd1336f34dba30e472eeea4da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 0}
+  cameraTransform: {fileID: 929713264}
   distance: 7
   height: 3
   angularSmoothLag: .300000012
