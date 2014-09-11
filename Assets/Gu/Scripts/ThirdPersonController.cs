@@ -278,68 +278,6 @@ void  ApplyGravity ()
 	}
 }
 
-// Apply Push is a subest of UpdateSmoothedMovementDirection
-// except it prevents the player from turning around (not yet)
-// and also prevents the player from moving side to side while
-// the object is being pushed
-void ApplyPush() {
-    //Here is where we will need to update out pushing direction
-    //we will want to lock the player faceing the object and cause
-    //any sideways movement to have no effect. Further when the player
-    //move backward the character will not turn around and will instead 
-    //simply move backward in the direction of the camera pulling the object
-
-    _characterState = CharacterState.Pushing;
-    lockPosition = transform.position;
-
-    Transform playerTransform = this.gameObject.transform;
-
-    // Forward vector relative to the camera along the x-z plane	
-    Vector3 forward = playerTransform.TransformDirection(Vector3.forward);
-    forward.y = 0;
-    forward = forward.normalized;
-
-    float v = Input.GetAxisRaw("Vertical");
-
-    // Are we moving backwards or looking backwards
-    if (v < -0.2f)
-        movingBack = true;
-    else
-        movingBack = false;
-
-    bool wasMoving = isMoving;
-    isMoving = Mathf.Abs(v) > 0.1f;
-
-    // Target direction
-    Vector3 targetDirection = v * forward;
-
-    if (IsGrounded()) {
-
-        // We store speed and direction seperately,
-        // so that when the character stands still we still have a valid forward direction
-        // moveDirection is always normalized, and we only update it if there is user input.
-        if (targetDirection != Vector3.zero) {
-            moveDirection = targetDirection.normalized;
-        }
-
-        // Smooth the speed based on the current target direction
-        float curSmooth = speedSmoothing * Time.deltaTime;
-
-        // Choose target speed
-        //* We want to support analog input but make sure you cant walk faster diagonally than just forward or sideways
-        float targetSpeed = Mathf.Min(targetDirection.magnitude, 1.0f);
-
-        // Pick speed modifier
-        targetSpeed *= pushSpeed;
-
-        moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, curSmooth);
-
-        // Reset walk time start when we slow down
-        if (moveSpeed < walkSpeed * 0.3f)
-            walkTimeStart = Time.time;
-    }
-}
-
 public float CalculateJumpVerticalSpeed ( float targetJumpHeight  )
 {
 	// From the jump height and gravity we deduce the upwards speed 
@@ -367,17 +305,12 @@ void Update ()
 		Input.ResetInputAxes();
 	}
 
-    if (Input.GetButton("Interact") && gu.validObjectFound()){
-        ApplyPush();
-    }
-    else {
-        if (Input.GetButtonDown("Jump")) {
-            lastJumpButtonTime = Time.time;
-        }
-        UpdateSmoothedMovementDirection();
-    }
 
-	
+    if (Input.GetButtonDown("Jump")) {
+        lastJumpButtonTime = Time.time;
+    }
+    UpdateSmoothedMovementDirection();
+    	
 	// Apply gravity
 	// - extra power jump modifies gravity
 	// - controlledDescent mode modifies gravity
