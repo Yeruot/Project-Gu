@@ -18,7 +18,7 @@ public float runMaxAnimationSpeed = 1.0f;
 public float jumpAnimationSpeed = 1.15f;
 public float landAnimationSpeed = 1.0f;
 
-private Animation _animation;
+private Animation characterAnimation;
 
 enum CharacterState {
 	Idle = 0,
@@ -29,7 +29,7 @@ enum CharacterState {
     Pushing = 5,
 }
 
-private CharacterState _characterState;
+private CharacterState characterState;
 
 // The speed when walking
 public float walkSpeed= 6.0f;
@@ -106,8 +106,8 @@ void  Awake ()
     gu = Gu.Instance;
 	moveDirection = transform.TransformDirection(Vector3.forward);
 	
-	_animation = GetComponent<Animation>();
-	if(!_animation)
+	characterAnimation = GetComponent<Animation>();
+	if(!characterAnimation)
 		Debug.Log("The character you would like to control doesn't have animations. Moving her might look weird.");
 	
 	/*
@@ -117,19 +117,19 @@ public AnimationClip runAnimation;
 public AnimationClip jumpPoseAnimation;	
 	*/
 	if(!idleAnimation) {
-		_animation = null;
+		characterAnimation = null;
 		Debug.Log("No idle animation found. Turning off animations.");
 	}
 	if(!walkAnimation) {
-		_animation = null;
+		characterAnimation = null;
 		Debug.Log("No walk animation found. Turning off animations.");
 	}
 	if(!runAnimation) {
-		_animation = null;
+		characterAnimation = null;
 		Debug.Log("No run animation found. Turning off animations.");
 	}
 	if(!jumpPoseAnimation && canJump) {
-		_animation = null;
+		characterAnimation = null;
 		Debug.Log("No jump animation found and the character has canJump enabled. Turning off animations.");
 	}
 			
@@ -198,23 +198,23 @@ void  UpdateSmoothedMovementDirection ()
 		//* We want to support analog input but make sure you cant walk faster diagonally than just forward or sideways
 		float targetSpeed= Mathf.Min(targetDirection.magnitude, 1.0f);
 	
-		_characterState = CharacterState.Idle;
+		characterState = CharacterState.Idle;
 		
 		// Pick speed modifier
 		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 		{
 			targetSpeed *= runSpeed;
-			_characterState = CharacterState.Running;
+			characterState = CharacterState.Running;
 		}
 		else if (Time.time - trotAfterSeconds > walkTimeStart)
 		{
 			targetSpeed *= trotSpeed;
-			_characterState = CharacterState.Trotting;
+			characterState = CharacterState.Trotting;
 		}
 		else
 		{
 			targetSpeed *= walkSpeed;
-			_characterState = CharacterState.Walking;
+			characterState = CharacterState.Walking;
 		}
 		
 		moveSpeed = Mathf.Lerp(moveSpeed, targetSpeed, curSmooth);
@@ -293,12 +293,11 @@ public void DidJump ()
 	lastJumpStartHeight = transform.position.y;
 	lastJumpButtonTime = -10;
 	
-	_characterState = CharacterState.Jumping;
+	characterState = CharacterState.Jumping;
 }
 
 void Update ()
 {
-	
 	if (!isControllable)
 	{
 		// kill all inputs if not controllable.
@@ -328,37 +327,37 @@ void Update ()
 	collisionFlags = controller.Move(movement);
 	
 	// ANIMATION sector
-	if(_animation) {
-		if(_characterState == CharacterState.Jumping) 
+	if(characterAnimation) {
+		if(characterState == CharacterState.Jumping) 
 		{
 			if(!jumpingReachedApex) {
-				_animation[jumpPoseAnimation.name].speed = jumpAnimationSpeed;
-				_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
-				_animation.CrossFade(jumpPoseAnimation.name);
+				characterAnimation[jumpPoseAnimation.name].speed = jumpAnimationSpeed;
+				characterAnimation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
+				characterAnimation.CrossFade(jumpPoseAnimation.name);
 			} else {
-				_animation[jumpPoseAnimation.name].speed = -landAnimationSpeed;
-				_animation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
-				_animation.CrossFade(jumpPoseAnimation.name);				
+				characterAnimation[jumpPoseAnimation.name].speed = -landAnimationSpeed;
+				characterAnimation[jumpPoseAnimation.name].wrapMode = WrapMode.ClampForever;
+				characterAnimation.CrossFade(jumpPoseAnimation.name);				
 			}
 		} 
 		else 
 		{
 			if(controller.velocity.sqrMagnitude < 0.1f) {
-				_animation.CrossFade(idleAnimation.name);
+				characterAnimation.CrossFade(idleAnimation.name);
 			}
 			else 
 			{
-				if(_characterState == CharacterState.Running) {
-					_animation[runAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0f, runMaxAnimationSpeed);
-					_animation.CrossFade(runAnimation.name);	
+				if(characterState == CharacterState.Running) {
+					characterAnimation[runAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0f, runMaxAnimationSpeed);
+					characterAnimation.CrossFade(runAnimation.name);	
 				}
-				else if(_characterState == CharacterState.Trotting) {
-					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0f, trotMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);	
+				else if(characterState == CharacterState.Trotting) {
+					characterAnimation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0f, trotMaxAnimationSpeed);
+					characterAnimation.CrossFade(walkAnimation.name);	
 				}
-				else if(_characterState == CharacterState.Walking) {
-					_animation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0f, walkMaxAnimationSpeed);
-					_animation.CrossFade(walkAnimation.name);	
+				else if(characterState == CharacterState.Walking) {
+					characterAnimation[walkAnimation.name].speed = Mathf.Clamp(controller.velocity.magnitude, 0.0f, walkMaxAnimationSpeed);
+					characterAnimation.CrossFade(walkAnimation.name);	
 				}
 				
 			}
@@ -454,7 +453,7 @@ public void Reset ()
 }
 
 public bool IsPushing() {
-    if (_characterState == CharacterState.Pushing)
+    if (characterState == CharacterState.Pushing)
         return true;
     return false;
 }
