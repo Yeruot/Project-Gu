@@ -88,10 +88,11 @@ public class Gu : MonoBehaviour {
     }
 
     public bool IsCarrying() {
-        if (holdingObject != null)
-            return true;
-        else
-            return false;
+        return actionState == ActionState.Carrying ? true : false;
+    }
+
+    public bool IsPushing() {
+        return actionState == ActionState.Pushing ? true : false;
     }
 }
 

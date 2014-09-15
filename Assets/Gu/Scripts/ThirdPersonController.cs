@@ -27,8 +27,6 @@ public class ThirdPersonController : MonoBehaviour
         Trotting = 2,
         Running = 3,
         Jumping = 4,
-        Pushing = 5,
-        Carrying = 6,
     }
 
     private CharacterState characterState;
@@ -151,12 +149,19 @@ public class ThirdPersonController : MonoBehaviour
         Vector3 right = new Vector3(forward.z, 0, -forward.x);
 
         float v = Input.GetAxisRaw("Vertical");
-        float h = Input.GetAxisRaw("Horizontal");
+
+
+        float h = gu.IsPushing() ? 0 : Input.GetAxisRaw("Horizontal");
 
         // Are we moving backwards or looking backwards
-        if (v < -0.2f)
-            movingBack = true;
-        else
+        if (v < -0.2f) {
+            if (gu.IsPushing()) {
+                movingBack = false;
+                v = 0;
+            } else {
+                movingBack = true;
+            }
+        } else
             movingBack = false;
 
         bool wasMoving = isMoving;
@@ -344,7 +349,7 @@ public class ThirdPersonController : MonoBehaviour
 
         // Set rotation to the move direction
         if (IsGrounded()) {
-            if (!IsPushing()) {
+            if (!gu.IsPushing()) {
                 transform.rotation = Quaternion.LookRotation(moveDirection);
             }
         } else {
@@ -411,11 +416,4 @@ public class ThirdPersonController : MonoBehaviour
     public void Reset() {
         gameObject.tag = "Player";
     }
-
-    public bool IsPushing() {
-        if (characterState == CharacterState.Pushing)
-            return true;
-        return false;
-    }
-
 }
